@@ -1,1 +1,1 @@
-# LIRI-2E
+# StudentBot
