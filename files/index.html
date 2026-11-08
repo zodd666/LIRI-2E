@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudentBot – ISI Kef</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><b>🤖 StudentBot – ISI Kef</b><small id="sub">Assistant des étudiants IRS </small></div><button id="abtn">⚙️ Admin Panel</button></header>
+<div id="chat"></div>
+<div id="opts"><div></div></div>
+<div id="lightbox" hidden><button id="lb-close" aria-label="Fermer">✕</button><img id="lb-img" src="" alt="Emploi du temps"></div>
+
+<!-- ===== PANNEAU D'ADMINISTRATION (ouvrir la page avec #admin à la fin de l'adresse) ===== -->
+<div id="admin" hidden>
+<div class="w">
+ <div class="row"><b>⚙️ Panneau d'administration</b><button id="aclose" class="nav">Fermer</button></div>
+ <p class="hint">Les modifications sont gardées sur cet appareil. Pour les rendre permanentes pour toute l'équipe, clique sur « Télécharger index.html » et remplace le fichier du projet.</p>
+ <div id="amsg" class="hint"></div>
+ <div class="card"><h4>⏰ Deadlines</h4><div id="adl"></div><div class="row"><button id="adl-add" class="nav">+ Ajouter</button><button id="adl-save">Enregistrer</button></div></div>
+ <div class="card"><h4>📝 Dates des examens</h4><div id="aex"></div><button id="aex-save">Enregistrer</button></div>
+ <div class="card"><h4>🔑 Photo des codes Google Classroom</h4>
+  <p class="hint">Remplace la photo officielle des codes affichée aux étudiants.</p>
+  <input type="file" id="aco-file" accept="image/*" style="display:none">
+  <button id="aco-btn" type="button">📁 Choisir une photo</button>
+  <div id="aco-preview" style="margin-top:8px"></div>
+ </div>
+ <div class="card"><h4>📈 Avancement des cours</h4><div id="apr"></div><button id="apr-save">Enregistrer</button></div>
+ <div class="card"><h4>➕ Ajouter une entrée (FAQ, démarche, contact)</h4>
+  <select id="add-par"><option value="faq">FAQ</option><option value="proc">Guide de démarche</option><option value="ct">Bureau / contact</option></select>
+  <input id="add-title" placeholder="Titre ou question">
+  <textarea id="add-body" placeholder="Réponse ou contenu"></textarea>
+  <button id="add-btn">Ajouter</button>
+  <h4>Supprimer une entrée</h4><div id="adel"></div></div>
+ <div class="card"><h4>✏️ Modifier n'importe quel écran</h4><p class="hint">Texte HTML simple : &lt;b&gt;gras&lt;/b&gt;, &lt;br&gt; pour passer à la ligne.</p>
+  <select id="ased"></select><textarea id="ahtml" style="min-height:140px"></textarea><button id="ased-save">Enregistrer l'écran</button></div>
+ <div class="card"><div class="row"><button id="aexp">⬇️ Télécharger index.html</button><button id="areset" class="nav">Réinitialiser mes modifications</button></div></div>
+</div>
+</div>
+
+<!-- Écrans du bot : tout le contenu est ici. Chaque <section> est un écran, chaque bouton de <nav> mène à l'écran dont l'id est dans data-go. Remplacer les [à remplir] directement dans ce fichier. -->
+<div id="screens">
+<section id="home">
+<div class="msg">Bonjour 👋 Je suis <b>StudentBot</b>. Choisis un menu :</div>
+<nav><button data-go="plan">📅 Planning et échéances</button><button data-go="mod">📚 Modules et chapitres</button><button data-go="adm">🏛️ Assistant administratif</button></nav>
+</section>
+<!-- ===== MENU 1 : PLANNING ET ÉCHÉANCES ===== -->
+<section id="plan">
+<div class="msg">Que veux-tu consulter ?</div>
+<nav><button data-go="edt">🕒 Emplois du temps</button><button data-go="exa">📝 Dates des examens</button><button data-go="dl">⏰ Deadlines et rappels</button></nav>
+</section>
+<section id="edt">
+<div class="msg">Choisis ta classe :</div>
+<nav><button data-go="edt_a1">L2 IRS A – G1</button><button data-go="edt_a2">L2 IRS A – G2</button><button data-go="edt_b3">L2 IRS B – G3</button><button data-go="edt_b4">L2 IRS B – G4</button><button data-go="edt_b5">L2 IRS B – G5</button></nav>
+</section>
+<section id="edt_a1">
+<div class="msg"><b>Emploi du temps – L2 IRS A (G1)</b><br><small>2ème année / Semestre 3 · Valable du 12/09/2026 au 31/12/2026</small><div class="img-wrap"><img src="images/edt_l2_irs_a_g1.jpg" alt="Emploi du temps L2 IRS A G1" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/edt_l2_irs_a_g1.jpg" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav></nav>
+</section>
+<section id="edt_a2">
+<div class="msg"><b>Emploi du temps – L2 IRS A (G2)</b><br><small>2ème année / Semestre 3 · Valable du 12/09/2026 au 31/12/2026</small><div class="img-wrap"><img src="images/edt_l2_irs_a_g2.png" alt="Emploi du temps L2 IRS A G2" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/edt_l2_irs_a_g2.png" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav></nav>
+</section>
+<section id="edt_b3">
+<div class="msg"><b>Emploi du temps – L2 IRS B (G3)</b><br><small>2ème année / Semestre 3 · Valable du 12/09/2026 au 31/12/2026</small><div class="img-wrap"><img src="images/edt_l2_irs_b_g3.jpg" alt="Emploi du temps L2 IRS B G3" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/edt_l2_irs_b_g3.jpg" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav></nav>
+</section>
+<section id="edt_b4">
+<div class="msg"><b>Emploi du temps – L2 IRS B (G4)</b><br><small>2ème année / Semestre 3 · Valable du 12/09/2026 au 31/12/2026</small><div class="img-wrap"><img src="images/edt_l2_irs_b_g4.jpg" alt="Emploi du temps L2 IRS B G4" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/edt_l2_irs_b_g4.jpg" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav></nav>
+</section>
+<section id="edt_b5">
+<div class="msg"><b>Emploi du temps – L2 IRS B (G5)</b><br><small>2ème année / Semestre 3 · Valable du 12/09/2026 au 31/12/2026</small><div class="img-wrap"><img src="images/edt_l2_irs_b_g5.jpg" alt="Emploi du temps L2 IRS B G5" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/edt_l2_irs_b_g5.jpg" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav></nav>
+</section>
+<section id="exa">
+<div class="msg"><b>Examens</b><table><tr><th>Matière</th><th>Date</th></tr><tr><td>Graphes et optimisation</td><td>à confirmer</td></tr><tr><td>Probabilité Statistique</td><td>à confirmer</td></tr><tr><td>Réseaux Locaux</td><td>14/12/2026</td></tr><tr><td>Technologies Multimédia</td><td>à confirmer</td></tr><tr><td>Méthodologie de Conception de logiciel</td><td>à confirmer</td></tr><tr><td>Fondements des Bases de données</td><td>à confirmer</td></tr><tr><td>Programmation orientée objet</td><td>à confirmer</td></tr><tr><td>Sécurité informatique</td><td>16/12/2026</td></tr><tr><td>Anglais 3</td><td>à confirmer</td></tr><tr><td>Gestion d'entreprise</td><td>à confirmer</td></tr><tr><td>CCNA 1</td><td>18/12/2026</td></tr><tr><td>Communication Optique</td><td>à confirmer</td></tr></table><small>Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="dl">
+<div class="msg"><b>Prochaines échéances</b><br><p data-s="Fondements des Bases de données" data-w="TD 2 à rendre" data-d="2026-10-17">Fondements des Bases de données – TD 2 à rendre<br>17/10/2026<span class="tag" data-date="2026-10-17"></span></p><p data-s="Programmation orientée objet" data-w="Rendu du mini-projet" data-d="2026-10-24">Programmation orientée objet – Rendu du mini-projet<br>24/10/2026<span class="tag" data-date="2026-10-24"></span></p><p data-s="Réseaux Locaux" data-w="Compte rendu du TP 1" data-d="2026-10-31">Réseaux Locaux – Compte rendu du TP 1<br>31/10/2026<span class="tag" data-date="2026-10-31"></span></p><small>🔔 Les rappels automatiques seront activés avec le back-end.</small></div>
+<nav></nav>
+</section>
+<!-- ===== MENU 2 : MODULES ET CHAPITRES ===== -->
+<section id="mod">
+<div class="msg">Choisis une matière :</div>
+<nav><button data-go="s0">Graphes et optimisation</button><button data-go="s1">Probabilité Statistique</button><button data-go="s2">Réseaux Locaux</button><button data-go="s3">Technologies Multimédia</button><button data-go="s4">Méthodologie de Conception de logiciel</button><button data-go="s5">Fondements des Bases de données</button><button data-go="s6">Programmation orientée objet</button><button data-go="s7">Sécurité informatique</button><button data-go="s8">Anglais 3</button><button data-go="s9">Gestion d'entreprise</button><button data-go="s10">CCNA 1</button><button data-go="s11">Communication Optique</button></nav>
+</section>
+<section id="classroom_codes">
+<div class="msg"><b>Cours et codes Google Classroom (Semestre 3)</b><br><small>Liste officielle des codes par matière</small><div class="img-wrap"><img src="images/codes_classroom.jpg" alt="Cours et codes de Classroom - Semestre 3" class="schedule-img"></div><div class="img-actions">🔍 <span>Clique sur l'image pour l'agrandir</span> · <a href="images/codes_classroom.jpg" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a></div></div>
+<nav><button data-go="join">❓ Comment rejoindre un cours ?</button></nav>
+</section>
+<section id="join">
+<div class="msg"><b>Rejoindre un cours Google Classroom</b><ol><li>Ouvre <b>classroom.google.com</b> et connecte-toi.</li><li>Clique sur <b>+</b> en haut à droite.</li><li>Choisis <b>Rejoindre un cours</b> (ou « Participer à un cours »).</li><li>Saisis le code de la matière puis confirme.</li></ol></div>
+<nav></nav>
+</section>
+<!-- Matière : Graphes et optimisation -->
+<section id="s0">
+<div class="msg"><b>Graphes et optimisation</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s0t">🧪 Guide des TP</button><button data-go="s0r">🔗 Ressources par chapitre</button><button data-go="s0p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s0c">
+<div class="msg">Code de <b>Graphes et optimisation</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s0t">
+<div class="msg"><b>Guide des TP – Graphes et optimisation</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s0r">
+<div class="msg"><b>Ressources – Graphes et optimisation</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s0p">
+<div class="msg"><b>Graphes et optimisation</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Probabilité Statistique -->
+<section id="s1">
+<div class="msg"><b>Probabilité Statistique</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s1t">🧪 Guide des TP</button><button data-go="s1r">🔗 Ressources par chapitre</button><button data-go="s1p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s1c">
+<div class="msg">Code de <b>Probabilité Statistique</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s1t">
+<div class="msg"><b>Guide des TP – Probabilité Statistique</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s1r">
+<div class="msg"><b>Ressources – Probabilité Statistique</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s1p">
+<div class="msg"><b>Probabilité Statistique</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Réseaux Locaux -->
+<section id="s2">
+<div class="msg"><b>Réseaux Locaux</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s2t">🧪 Guide des TP</button><button data-go="s2r">🔗 Ressources par chapitre</button><button data-go="s2p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s2c">
+<div class="msg">Code de <b>Réseaux Locaux</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s2t">
+<div class="msg"><b>Guide des TP – Réseaux Locaux</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s2r">
+<div class="msg"><b>Ressources – Réseaux Locaux</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s2p">
+<div class="msg"><b>Réseaux Locaux</b> : 3 chapitres sur 8<div class="bar"><i style="width:38%"></i></div><small>Mis à jour par le délégué.</small></div>
+<nav></nav>
+</section>
+<!-- Matière : Technologies Multimédia -->
+<section id="s3">
+<div class="msg"><b>Technologies Multimédia</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s3t">🧪 Guide des TP</button><button data-go="s3r">🔗 Ressources par chapitre</button><button data-go="s3p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s3c">
+<div class="msg">Code de <b>Technologies Multimédia</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s3t">
+<div class="msg"><b>Guide des TP – Technologies Multimédia</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s3r">
+<div class="msg"><b>Ressources – Technologies Multimédia</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s3p">
+<div class="msg"><b>Technologies Multimédia</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Méthodologie de Conception de logiciel -->
+<section id="s4">
+<div class="msg"><b>Méthodologie de Conception de logiciel</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s4t">🧪 Guide des TP</button><button data-go="s4r">🔗 Ressources par chapitre</button><button data-go="s4p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s4c">
+<div class="msg">Code de <b>Méthodologie de Conception de logiciel</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s4t">
+<div class="msg"><b>Guide des TP – Méthodologie de Conception de logiciel</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s4r">
+<div class="msg"><b>Ressources – Méthodologie de Conception de logiciel</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s4p">
+<div class="msg"><b>Méthodologie de Conception de logiciel</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Fondements des Bases de données -->
+<section id="s5">
+<div class="msg"><b>Fondements des Bases de données</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s5t">🧪 Guide des TP</button><button data-go="s5r">🔗 Ressources par chapitre</button><button data-go="s5p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s5c">
+<div class="msg">Code de <b>Fondements des Bases de données</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s5t">
+<div class="msg"><b>Guide des TP – Fondements des Bases de données</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s5r">
+<div class="msg"><b>Ressources – Fondements des Bases de données</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s5p">
+<div class="msg"><b>Fondements des Bases de données</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Programmation orientée objet -->
+<section id="s6">
+<div class="msg"><b>Programmation orientée objet</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s6t">🧪 Guide des TP</button><button data-go="s6r">🔗 Ressources par chapitre</button><button data-go="s6p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s6c">
+<div class="msg">Code de <b>Programmation orientée objet</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s6t">
+<div class="msg"><b><video width="640" height="360" controls>
+  <source src="How To Download PyCharm Community Edition - Tutorial Wiz (1080p).mp4" type="video/mp4">
+ 
+  Votre navigateur ne supporte pas la balise vidéo.
+</video>  </div>
+<nav></nav>
+</section>
+<section id="s6r">
+<div class="msg"><b>Ressources – Programmation orientée objet</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s6p">
+<div class="msg"><b>Programmation orientée objet</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Sécurité informatique -->
+<section id="s7">
+<div class="msg"><b>Sécurité informatique</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s7t">🧪 Guide des TP</button><button data-go="s7r">🔗 Ressources par chapitre</button><button data-go="s7p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s7c">
+<div class="msg">Code de <b>Sécurité informatique</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s7t">
+<div class="msg"><b>Guide des TP – Sécurité informatique</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s7r">
+<div class="msg"><b>Ressources – Sécurité informatique</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s7p">
+<div class="msg"><b>Sécurité informatique</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Anglais 3 -->
+<section id="s8">
+<div class="msg"><b>Anglais 3</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s8t">🧪 Guide des TP</button><button data-go="s8r">🔗 Ressources par chapitre</button><button data-go="s8p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s8c">
+<div class="msg">Code de <b>Anglais 3</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s8t">
+<div class="msg"><b>Guide des TP – Anglais 3</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s8r">
+<div class="msg"><b>Ressources – Anglais 3</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s8p">
+<div class="msg"><b>Anglais 3</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Gestion d'entreprise -->
+<section id="s9">
+<div class="msg"><b>Gestion d'entreprise</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s9t">🧪 Guide des TP</button><button data-go="s9r">🔗 Ressources par chapitre</button><button data-go="s9p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s9c">
+<div class="msg">Code de <b>Gestion d'entreprise</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s9t">
+<div class="msg"><b>Guide des TP – Gestion d'entreprise</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s9r">
+<div class="msg"><b>Ressources – Gestion d'entreprise</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s9p">
+<div class="msg"><b>Gestion d'entreprise</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : CCNA 1 -->
+<section id="s10">
+<div class="msg"><b>CCNA 1</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s10t">🧪 Guide des TP</button><button data-go="s10r">🔗 Ressources par chapitre</button><button data-go="s10p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s10c">
+<div class="msg">Code de <b>CCNA 1</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s10t">
+<div class="msg"><b>Guide des TP – CCNA 1</b><br>Logiciels : <span class="ph">[à remplir]</span><br>Installation : <span class="ph">[à remplir]</span><br>Énoncés : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s10r">
+<div class="msg"><b>Ressources – CCNA 1</b><br>Chapitre 1 : <span class="ph">[à remplir]</span><br>Chapitre 2 : <span class="ph">[à remplir]</span><br>Chapitre 3 : <span class="ph">[à remplir]</span></div>
+<nav></nav>
+</section>
+<section id="s10p">
+<div class="msg"><b>CCNA 1</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- Matière : Communication Optique -->
+<section id="s11">
+<div class="msg"><b>Communication Optique</b><br>Que veux-tu consulter ?</div>
+<nav><button data-go="s11t">🧪 Guide des TP</button><button data-go="s11r">🔗 Ressources par chapitre</button><button data-go="s11p">📈 Avancement du cours</button></nav>
+</section>
+<section id="s11c">
+<div class="msg">Code de <b>Communication Optique</b> : <b><span class="ph">[à remplir]</span></b><small>Mis à jour le 10/10/2026</small></div>
+<nav><button data-go="join">Comment rejoindre ?</button></nav>
+</section>
+<section id="s11t">
+<div class="msg"><b>Guide des TP – Communication Optique</b><br>🎙️ <b>Message vocal de l'enseignante :</b><div class="audio-wrap"><audio controls preload="metadata"><source src="audio/tp_communication_optique.ogg" type="audio/ogg">Votre navigateur ne supporte pas la lecture audio.</audio></div><small>📢 <i>« Consigne pour les Groupes 3, 4 et 5 : Merci de ramener vos PC portables pour la séance de TP du jeudi afin de pouvoir travailler sur OptiSystem. »</i></small></div>
+<nav></nav>
+</section>
+<section id="s11r">
+<div class="msg"><b>Ressources – Communication Optique</b><br><br>Bonsoir,<br><br>📦 <b>Lien de téléchargement OptiSystem :</b><br><a href="https://pesktop.com/en/windows/optiwave-optisystem" target="_blank" rel="noopener">https://pesktop.com/en/windows/optiwave-optisystem</a><br><br>🗜️ <b>Lien de téléchargement de l'application WinZip pour extraire le fichier zip dans WinRAR :</b><br><a href="https://www.winzip.com/fr/download/winzip/" target="_blank" rel="noopener">https://www.winzip.com/fr/download/winzip/</a><br><br>▶️ <b>Lien pour vous aider à installer et activer la licence d'OptiSystem :</b><br><a href="https://www.youtube.com/watch?v=ziRDxH6aGq8&amp;t=38s" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ziRDxH6aGq8&amp;t=38s</a><br><br>▶️ <b>Lien pour vous aider à extraire le fichier zip endommagé dans WinRAR :</b><br><a href="https://www.youtube.com/watch?v=sL4OAoLFH2I" target="_blank" rel="noopener">https://www.youtube.com/watch?v=sL4OAoLFH2I</a><br><br>Bien à vous</div>
+<nav></nav>
+</section>
+<section id="s11p">
+<div class="msg"><b>Communication Optique</b> : avancement non renseigné pour le moment.</div>
+<nav></nav>
+</section>
+<!-- ===== MENU 3 : ASSISTANT ADMINISTRATIF ===== -->
+<section id="adm">
+<div class="msg">Comment puis-je t'aider ?</div>
+<nav><button data-go="faq">❓ FAQ</button><button data-go="proc">📋 Guides de démarches</button><button data-go="ct">📞 Bureaux et contacts</button><button data-go="q">✉️ Question introuvable</button></nav>
+</section>
+<section id="faq">
+<div class="msg">Choisis ta question :</div>
+<nav><button data-go="f0">Comment obtenir une attestation d'inscription ?</button><button data-go="f1">Quelles sont les règles d'absence ?</button><button data-go="f2">Comment fonctionne la session de rattrapage ?</button><button data-go="f3">Où trouver l'emploi du temps officiel ?</button><button data-go="f4">Comment contacter l'administration ?</button></nav>
+</section>
+<section id="f0">
+<div class="msg"><b>Comment obtenir une attestation d'inscription ?</b><br>Réponse : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="f1">
+<div class="msg"><b>Quelles sont les règles d'absence ?</b><br>Réponse : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="f2">
+<div class="msg"><b>Comment fonctionne la session de rattrapage ?</b><br>Réponse : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="f3">
+<div class="msg"><b>Où trouver l'emploi du temps officiel ?</b><br>Réponse : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="f4">
+<div class="msg"><b>Comment contacter l'administration ?</b><br>Réponse : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="proc">
+<div class="msg">Quelle démarche ?</div>
+<nav><button data-go="p0">Attestation d'inscription</button><button data-go="p1">Relevé de notes</button><button data-go="p2">Justification d'absence</button><button data-go="p3">Réclamation de note</button><button data-go="p4">Convention de stage</button></nav>
+</section>
+<section id="p0">
+<div class="msg"><b>Attestation d'inscription</b><br>Étapes : <span class="ph">[à remplir]</span><br>Documents : <span class="ph">[à remplir]</span><br>Bureau : <span class="ph">[à remplir]</span><br>Délai : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="p1">
+<div class="msg"><b>Relevé de notes</b><br>Étapes : <span class="ph">[à remplir]</span><br>Documents : <span class="ph">[à remplir]</span><br>Bureau : <span class="ph">[à remplir]</span><br>Délai : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="p2">
+<div class="msg"><b>Justification d'absence</b><br>Étapes : <span class="ph">[à remplir]</span><br>Documents : <span class="ph">[à remplir]</span><br>Bureau : <span class="ph">[à remplir]</span><br>Délai : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="p3">
+<div class="msg"><b>Réclamation de note</b><br>Étapes : <span class="ph">[à remplir]</span><br>Documents : <span class="ph">[à remplir]</span><br>Bureau : <span class="ph">[à remplir]</span><br>Délai : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="p4">
+<div class="msg"><b>Convention de stage</b><br>Étapes : <span class="ph">[à remplir]</span><br>Documents : <span class="ph">[à remplir]</span><br>Bureau : <span class="ph">[à remplir]</span><br>Délai : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="ct">
+<div class="msg">Quel bureau ?</div>
+<nav><button data-go="o0">Scolarité</button><button data-go="o1">Département informatique</button><button data-go="o2">Bibliothèque</button><button data-go="o3">Service des stages</button></nav>
+</section>
+<section id="o0">
+<div class="msg"><b>Scolarité</b><br>Rôle : <span class="ph">[à remplir]</span><br>Horaires : <span class="ph">[à remplir]</span><br>Email : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="o1">
+<div class="msg"><b>Département informatique</b><br>Rôle : <span class="ph">[à remplir]</span><br>Horaires : <span class="ph">[à remplir]</span><br>Email : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="o2">
+<div class="msg"><b>Bibliothèque</b><br>Rôle : <span class="ph">[à remplir]</span><br>Horaires : <span class="ph">[à remplir]</span><br>Email : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="o3">
+<div class="msg"><b>Service des stages</b><br>Rôle : <span class="ph">[à remplir]</span><br>Horaires : <span class="ph">[à remplir]</span><br>Email : <span class="ph">[à remplir]</span><small>ℹ️ Confirme toujours auprès de l'administration. Mis à jour le 10/10/2026.</small></div>
+<nav></nav>
+</section>
+<section id="q">
+<div class="msg">Écris ta question, l'équipe l'ajoutera à la FAQ.<textarea class="qt" placeholder="Ta question..."></textarea><button class="qs">Envoyer</button></div>
+<nav></nav>
+</section>
+</div>
+
+<script src="admin.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
